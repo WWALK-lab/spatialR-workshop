@@ -1,5 +1,5 @@
 # WWALK Lab: SpatialR Workshop
-Author: Isabella Richmond   
+Author: Bella Richmond   
 
 The goal of this workshop is to familiarize the WWALK lab with knowledge regarding packages, basic analyses, and mapping strategies that we can use to clean, analyze, and visualize spatial data within R. 
 
