@@ -1,100 +1,100 @@
 [
   {
-    "objectID": "index.html#spatial-analysis-software",
-    "href": "index.html#spatial-analysis-software",
-    "title": "ZULE SpatialR Workshop",
-    "section": "Spatial Analysis Software",
-    "text": "Spatial Analysis Software\nOur lab’s expertise lies in MANY softwares (which is extremely cool), they include:\n\nArcGIS (proprietary/click & point)\nENVI (proprietary)\nQGIS (click & point)\nGoogle Earth Engine\nR"
+    "objectID": "index.html#first-hows-your-day-going",
+    "href": "index.html#first-hows-your-day-going",
+    "title": "WWALK SpatialR Workshop",
+    "section": "First: how’s your day going?",
+    "text": "First: how’s your day going?"
   },
   {
-    "objectID": "index.html#very-briefly---some-advantages-of-r",
-    "href": "index.html#very-briefly---some-advantages-of-r",
-    "title": "ZULE SpatialR Workshop",
-    "section": "Very Briefly - Some Advantages of R",
-    "text": "Very Briefly - Some Advantages of R\n\n\n\n \n\n\n\n\n\n\nReproducibility/documentation\nContinuity\nVisualization\nResources (see the end of this presentation)\nAll the other usual stuff"
+    "objectID": "index.html#very-briefly---why-do-spatial-analysis-in-r",
+    "href": "index.html#very-briefly---why-do-spatial-analysis-in-r",
+    "title": "WWALK SpatialR Workshop",
+    "section": "Very briefly - why do spatial analysis in R?",
+    "text": "Very briefly - why do spatial analysis in R?\n\nReproducibility/documentation\nContinuity\nVisualization\nResources (see the end of this presentation)\n\n…\n\nAnyone else?"
   },
   {
     "objectID": "index.html#package-network",
     "href": "index.html#package-network",
-    "title": "ZULE SpatialR Workshop",
+    "title": "WWALK SpatialR Workshop",
     "section": "Package network",
-    "text": "Package network\nLOTS of packages for spatial analysis in R - can get really specific for certain analysis types/goals. The packages below will allow you do 95% of the spatial analyses and visualizations that you want to do in R:\n\nVector data -> sf\nRaster data -> stars or terra\nInteractive visualization -> mapview\nBasemaps -> osmdata, basemapR, ggmaps\nStatic visualization -> ggplot2"
+    "text": "Package network\nLOTS of packages for spatial analysis in R - can get really specific for certain analysis types/goals. The packages below will allow you do 95% of the spatial analyses and visualizations that you want to do in R:\n\nVector data -&gt; sf\nRaster data -&gt; stars or terra\nInteractive visualization -&gt; mapview\nBasemaps -&gt; osmdata, basemapR, ggmaps\nStatic visualization -&gt; ggplot2"
   },
   {
     "objectID": "index.html#spatial-data-types",
     "href": "index.html#spatial-data-types",
-    "title": "ZULE SpatialR Workshop",
+    "title": "WWALK SpatialR Workshop",
     "section": "Spatial Data Types",
     "text": "Spatial Data Types"
   },
   {
     "objectID": "index.html#projections",
     "href": "index.html#projections",
-    "title": "ZULE SpatialR Workshop",
+    "title": "WWALK SpatialR Workshop",
     "section": "Projections",
-    "text": "Projections\n\n\n\nMost common projection is WGS 84 (EPSG: 4326)\nOften a projection that uses meters as units is useful, for us NAD83/MTM Zone 8 can be useful (EPSG: 32188)\nProjection codes can be found at epsg.io"
+    "text": "Projections\n\n\n\nMost common projection is WGS 84 (EPSG: 4326)\nDifferent data sources will have different projections (e.g., Stats Canada uses NAD83 / Statistics Canada Lambert EPSG 3347)\nOften a projection that uses meters as units is necessary for analysis, reproject your data before starting!\nProjection codes can be found at epsg.io"
   },
   {
     "objectID": "index.html#general-workflow",
     "href": "index.html#general-workflow",
-    "title": "ZULE SpatialR Workshop",
+    "title": "WWALK SpatialR Workshop",
     "section": "General Workflow",
     "text": "General Workflow\n\nInstall & load packages\nIdentify type of spatial data (vector vs raster)\nImport data (csv, shapefile, geopackage, tif) (+ visualize)\nAssign projection and transform data to match (+ visualize)\nDo any necessary spatial calculations (+ visualize)\n\ne.g., buffers, intersections, etc.\n\nPrepare for mapping\n\nbounding boxes, basemaps, etc.\n\nMap"
   },
   {
     "objectID": "index.html#step-1-install-and-load-packages",
     "href": "index.html#step-1-install-and-load-packages",
-    "title": "ZULE SpatialR Workshop",
+    "title": "WWALK SpatialR Workshop",
     "section": "Step 1: Install and load packages",
-    "text": "Step 1: Install and load packages\n\ninstall.packages(c('sf', 'stars', 'mapview', 'ggplot2', \n                   'dplyr', 'osmdata', 'basemaps'))\n\nsource('scripts/0-packages.R')"
+    "text": "Step 1: Install and load packages\n\ninstall.packages(c('sf', 'terra', 'tidyterra', 'mapview', 'ggplot2', \n                   'dplyr', 'tidyr', 'tibble', 'osmdata', 'basemaps'))\n\nsource('scripts/00-packages.R')"
   },
   {
     "objectID": "index.html#step-23-identify-type-of-data-import",
     "href": "index.html#step-23-identify-type-of-data-import",
-    "title": "ZULE SpatialR Workshop",
-    "section": "Step 2/3: Identify type of data & Import",
-    "text": "Step 2/3: Identify type of data & Import\n\nVector: sfRaster: stars\n\n\n\n# let's load in the Ruelles Vertes data \n# data from https://donnees.montreal.ca/ville-de-montreal/ruelles-vertes\n# shapefile containing polygons for 935 ruelles vertes across Montreal\n\nrv <- read_sf(\"input/ruelles-vertes.shp\")\n\n\n\n\n# okay, now let's load in some canopy cover data \n# tif file containing pixels of land cover type across Montreal\ncc <- read_stars(\"input/canopy-cover.tif\")"
+    "title": "WWALK SpatialR Workshop",
+    "section": "Step 2/3: Identify type of data & import",
+    "text": "Step 2/3: Identify type of data & import\n\nVector: sfRaster: stars\n\n\n\n# let's load in the Ruelles Vertes data \n# data from https://donnees.montreal.ca/ville-de-montreal/ruelles-vertes\n# shapefile containing polygons for 935 ruelles vertes across Montreal\n\nrv &lt;- read_sf(\"input/ruelles-vertes.shp\")\n\n\n\n\n# okay, now let's load in some canopy cover data \n# tif file containing pixels of land cover type across Montreal\ncc &lt;- rast(\"input/canopy-cover.tif\")"
   },
   {
     "objectID": "index.html#step-4-projections",
     "href": "index.html#step-4-projections",
-    "title": "ZULE SpatialR Workshop",
+    "title": "WWALK SpatialR Workshop",
     "section": "Step 4: Projections",
-    "text": "Step 4: Projections\n\n# let's check the projections of both of our datasets \nrv\n\ncc \n\n# unfortunately, they don't match (they rarely do!)\n# the projection of canopy is in metres, so we will project the ruelles to match it \nrv_t <- st_transform(rv, st_crs(cc))\n\n# since the crs is NAD83 MTM Zone 8, we could also use the ESPG code to reproject\nrv_t_code <- st_transform(rv, 32188)"
+    "text": "Step 4: Projections\n\n# let's check the projections of both of our datasets \nrv\n\ncc \n\n# unfortunately, they don't match (they rarely do!)\n# the projection of canopy is in metres, so we will project the ruelles to match it \nrv_t &lt;- st_transform(rv, st_crs(cc))\n\n# since the crs is NAD83 MTM Zone 8, we could also use the ESPG code to reproject\nrv_t_code &lt;- st_transform(rv, 32188)"
   },
   {
     "objectID": "index.html#step-5-spatial-calculations",
     "href": "index.html#step-5-spatial-calculations",
-    "title": "ZULE SpatialR Workshop",
+    "title": "WWALK SpatialR Workshop",
     "section": "Step 5: Spatial Calculations",
-    "text": "Step 5: Spatial Calculations\n\nVector: sfRaster: stars\n\n\n\n# merge polygons with the same IDs\nrv_m <- rv_t |>\n  group_by(RUELLE_ID) |>\n  summarise(geometry = st_union(geometry), \n                   nhood = first(PROPRIETAI),\n                   codenhood = first(CODE_ARR),\n                   date = first(DATE_AMENA))\n\n# calculate area of our sampling sites \nrv_a <- rv_m |> \n  mutate(area = st_area(geometry))\n# when we inspect what kind of data this is, it is a vector of class \"units\"\nclass(rv_a$area)\n# if we want to use this info in future operations - we need to convert from units to double\nrv_a <- rv_a |> \n  mutate(area = as.double(area))\n\n# produce buffers surrounding sites of interest\nbuffers <- st_buffer(rv_a, 50) #NOTE: units of projection are in meters\n\n# sample 3 random sampling points within each ruelle \nsamp <- st_sample(rv_a, c(3,3), type = \"random\", by_polygon = F) |>\n  st_as_sf()\n\n\n\n\n# let's intersect our land use/canopy cover with the buffers we created \ncc_int <- cc[buffers]\n\n\n# for each ruelle's buffer, let's calculate % canopy cover\n# calculate canopy cover by dividing number of pixels == 4 (canopy) by total number of pixels within a buffer\nbuff_can <- aggregate(cc, buffers, FUN = function(x) sum(x == 4)/length(x)) |>\n    st_as_sf() |>\n    rename(percan_2021 = `canopy-cover.tif`) |>\n    mutate(percan_2021 = round(percan_2021, 2))"
+    "text": "Step 5: Spatial Calculations\n\nVector: sfRaster: terra\n\n\n\n# merge polygons with the same IDs\nrv_m &lt;- rv_t |&gt;\n  group_by(RUELLE_ID) |&gt;\n  summarise(geometry = st_union(geometry), \n                   nhood = first(PROPRIETAI),\n                   codenhood = first(CODE_ARR),\n                   date = first(DATE_AMENA))\n\n# calculate area of our sampling sites \nrv_a &lt;- rv_m |&gt; \n  mutate(area = st_area(geometry))\n# when we inspect what kind of data this is, it is a vector of class \"units\"\nclass(rv_a$area)\n# if we want to use this info in future operations - we need to convert from units to double\nrv_a &lt;- rv_a |&gt; \n  mutate(area = as.double(area))\n\n# produce buffers surrounding sites of interest\nbuffers &lt;- st_buffer(rv_a, 50) #NOTE: units of projection are in meters\n\n# sample 3 random sampling points within each ruelle \nsamp &lt;- st_sample(rv_a, c(3,3), type = \"random\", by_polygon = F) |&gt;\n  st_as_sf()\n\n\n\n\n# let's intersect our land use/canopy cover with the buffers we created \ncc_int &lt;- crop(cc, buffers)\n\n\n# for each ruelle's buffer, let's calculate % canopy cover (canopy == 4 in the raster)\n\n# need to have buffers as a SpatVector, part of the terra package, to do this operation \nbuffers_sv &lt;- vect(buffers)\n\n# calculate the frequency of each category of the raster in each buffer \nt &lt;- freq(cc, zones = buffers_sv, touches = F)\n\nrv_cc &lt;- buffers |&gt;\n  rownames_to_column('zone') |&gt;\n  mutate(zone = as.numeric(zone)) |&gt;\n  left_join(t, by = 'zone') |&gt;\n  pivot_wider(\n    id_cols = c(zone, geometry),\n    names_from = value,\n    values_from = count\n  ) |&gt;\n  rowwise() |&gt; \n  mutate(cancov = `4` / sum(c_across(`1`:`4`))) %&gt;% \n  select(c(cancov, geometry))"
   },
   {
     "objectID": "index.html#step-6-mapping-prep",
     "href": "index.html#step-6-mapping-prep",
-    "title": "ZULE SpatialR Workshop",
+    "title": "WWALK SpatialR Workshop",
     "section": "Step 6: Mapping Prep",
-    "text": "Step 6: Mapping Prep\n\nbasemapsosmdata\n\n\n\n# set up bounding box - order: xmin, ymin, xmax, ymax\nbb <- c(xmin = -74.0788,\n        ymin = 45.3414,\n        xmax = -73.3894,\n        ymax = 45.7224)\n\n# or use layer to create bounding box \n# this creates a bounding box around all the buffers we created\nbb_layer <- st_bbox(buffers)\n\n# view all available maps \nget_maptypes()\n\n# you can add the basemap as a layer\nbbox <- st_bbox(bb)\nst_crs(bbox) = 4326\n\nggplot() + \n  basemap_gglayer(bbox, map_service = \"carto\", map_type = \"light\") + \n  scale_fill_identity() + \n  coord_sf()\n\n# you can also make it as a ggplot\nbasemap_ggplot(bbox, map_service = \"carto\", map_type = \"dark\")\n\n# and there are different spatial classes you can use, such as stars where the basemap is returned as a stars object\nbasemap_stars(bbox, map_service = \"osm\", map_type = \"streets\")\n\n\n\n\n# set up bounding box - order: xmin, ymin, xmax, ymax\nbb <- c(xmin = -74.0788,\n        ymin = 45.3414,\n        xmax = -73.3894,\n        ymax = 45.7224)\n\n# Island boundary using osmdata\nmtl <- opq(bb) |> # this make a call for any data found within our coordinates\n  add_osm_feature(key = 'place', value = 'island') |> # we select any features that are places + islands\n  osmdata_sf() # transform it into sf object\n# we are returned a list of different types of geometries that match our request\n# we will select the ones we are interested in and combine\nmultipolys <- st_make_valid(mtl$osm_multipolygons) # grab multipolygons (large islands)\npolys <- st_make_valid(mtl$osm_polygons) # grab polygons (small islands)\npolys <- st_cast(polys, \"MULTIPOLYGON\")\nallpolys <- st_as_sf(st_union(polys, multipolys)) # combine geometries and cast as sf\nst_crs(allpolys) = 4326 # set CRS as EPSG 4326 \n\n# Water\n# going to do the same thing as above but we want water features within our coordinates\nwater <- opq(bb) |>\n  add_osm_feature(key = 'natural', value = 'water') |>\n  osmdata_sf()\nwmpols <- water$osm_multipolygons\nwmpols <- st_cast(wmpols, \"MULTIPOLYGON\")\nwmpols <- st_as_sf(st_make_valid(wmpols))\nst_crs(wmpols) = 4326\n\n\n# osmdata is super flexible -- you can query just about anything!"
+    "text": "Step 6: Mapping Prep\n\nbasemapsosmdata\n\n\n\n# set up bounding box - order: xmin, ymin, xmax, ymax\nbb &lt;- c(xmin = -74.0788,\n        ymin = 45.3414,\n        xmax = -73.3894,\n        ymax = 45.7224)\n\n# or use layer to create bounding box \n# this creates a bounding box around all the buffers we created\nbb_layer &lt;- st_bbox(buffers)\n\n# view all available maps \nget_maptypes()\n\n# you can add the basemap as a layer\nbbox &lt;- st_bbox(bb)\nst_crs(bbox) = 4326\n\nggplot() + \n  basemap_gglayer(bbox, map_service = \"carto\", map_type = \"light\") + \n  scale_fill_identity() + \n  coord_sf()\n\n# you can also make it as a ggplot\nbasemap_ggplot(bbox, map_service = \"carto\", map_type = \"dark\")\n\n# and there are different spatial classes you can use, such as stars where the basemap is returned as a stars object\nbasemap_stars(bbox, map_service = \"osm\", map_type = \"streets\")\n\n\n\n\n# set up bounding box - order: xmin, ymin, xmax, ymax\nbb &lt;- c(xmin = -74.0788,\n        ymin = 45.3414,\n        xmax = -73.3894,\n        ymax = 45.7224)\n\n# Island boundary using osmdata\nmtl &lt;- opq(bb) |&gt; # this make a call for any data found within our coordinates\n  add_osm_feature(key = 'place', value = 'island') |&gt; # we select any features that are places + islands\n  osmdata_sf() # transform it into sf object\n# we are returned a list of different types of geometries that match our request\n# we will select the ones we are interested in and combine\nmultipolys &lt;- st_make_valid(mtl$osm_multipolygons) # grab multipolygons (large islands)\npolys &lt;- st_make_valid(mtl$osm_polygons) # grab polygons (small islands)\npolys &lt;- st_cast(polys, \"MULTIPOLYGON\")\nallpolys &lt;- st_as_sf(st_union(polys, multipolys)) # combine geometries and cast as sf\nst_crs(allpolys) = 4326 # set CRS as EPSG 4326 \n\n# Water\n# going to do the same thing as above but we want water features within our coordinates\nwater &lt;- opq(bb) |&gt;\n  add_osm_feature(key = 'natural', value = 'water') |&gt;\n  osmdata_sf()\nwmpols &lt;- water$osm_multipolygons\nwmpols &lt;- st_cast(wmpols, \"MULTIPOLYGON\")\nwmpols &lt;- st_as_sf(st_make_valid(wmpols))\nst_crs(wmpols) = 4326\n\n\n# osmdata is super flexible -- you can query just about anything!"
   },
   {
     "objectID": "index.html#step-7-map",
     "href": "index.html#step-7-map",
-    "title": "ZULE SpatialR Workshop",
+    "title": "WWALK SpatialR Workshop",
     "section": "Step 7: Map!",
-    "text": "Step 7: Map!\n\nVectorRasterVector + Raster\n\n\n\n# Theme -----------------------------------------------------\n# Palette set-up in separate script for ease if we want same colours across multiple maps \nsource('scripts/0-palette.R')\n\n# define theme for ggplot - can do this in the ggplot script as well if desired\nth <- theme(panel.border = element_rect(linewidth = 1, fill = NA),\n            panel.background = element_rect(fill = canadacol),\n            panel.grid = element_line(color = gridcol2, linewidth = 0.2),\n            axis.text = element_text(size = 11, color = 'black'),\n            axis.title = element_blank())\n\n# Plot -------------------------------------------------------\n# transform all layers so they have the same CRS \n# use EPSG 3347 - same projection that Statistics Canada uses\nmtlcrs <- 3347\nrv_m <- st_transform(rv, mtlcrs)\nallpolys_m <- st_transform(allpolys, mtlcrs)\nwmpols_m <- st_transform(wmpols, mtlcrs)\n\n# want the bounds of our map to be slightly smaller than the entire island\nbbi <- st_bbox(st_buffer(allpolys_m, 0.75))\n\n\n# plot all layers together with theme we set above \n# if we were plotting the raster we could use the geom_stars function\nplot <- ggplot() +\n  geom_sf(fill = montrealcol, data = allpolys_m) + \n  geom_sf(aes(fill = percan), data = rv_m) + \n  geom_sf(fill = watercol, col = \"#5b5b5b\", data = wmpols_m) + \n  scale_fill_viridis_c(direction = -1) + \n  coord_sf(xlim = c(bbi['xmin'], bbi['xmax']),\n           ylim = c(bbi['ymin'], bbi['ymax'])) +\n  th\n\n\n# Save -------------------------------------------------------\nggsave(\n  'graphics/ruelles-vertes.png',\n  plot,\n  width = 10,\n  height = 10,\n  dpi = 320\n)"
+    "text": "Step 7: Map!\n\nVectorRaster\n\n\n\n# Theme -----------------------------------------------------\n# Palette set-up in separate script for ease if we want same colours across multiple maps \nsource('scripts/0-palette.R')\n\n# define theme for ggplot - can do this in the ggplot script as well if desired\nth &lt;- theme(panel.border = element_rect(linewidth = 1, fill = NA),\n            panel.background = element_rect(fill = canadacol),\n            panel.grid = element_line(color = gridcol2, linewidth = 0.2),\n            axis.text = element_text(size = 11, color = 'black'),\n            axis.title = element_blank())\n\n# Plot -------------------------------------------------------\n# transform all layers so they have the same CRS \nmtlcrs &lt;- 3347\nrv_m &lt;- st_transform(rv_cc, mtlcrs)\nallpolys_m &lt;- st_transform(allpolys, mtlcrs)\nwmpols_m &lt;- st_transform(wmpols, mtlcrs)\n\n# want the bounds of our map to be slightly smaller than the entire island\nbbi &lt;- st_bbox(st_buffer(allpolys_m, 0.75))\n\n\n# plot all layers together with theme we set above \n# if we were plotting the raster we could use the geom_stars function\nplot &lt;- ggplot() +\n  geom_sf(fill = montrealcol, data = allpolys_m) + \n  geom_sf(aes(fill = cancov), data = rv_m) + \n  geom_sf(fill = watercol, col = \"#5b5b5b\", data = wmpols_m) + \n  scale_fill_viridis_c(direction = -1) + \n  coord_sf(xlim = c(bbi['xmin'], bbi['xmax']),\n           ylim = c(bbi['ymin'], bbi['ymax'])) +\n  th\n\n# Save -------------------------------------------------------\nggsave(\n  'graphics/ruelles-vertes.png',\n  plot,\n  width = 10,\n  height = 10,\n  dpi = 320\n)\n\n\n\n\n# clarify what the categories in the raster mean \ncls &lt;- data.frame(id=1:5, cover=c(\"low_imp\", \"high_imp\", \"low_veg\", \"high_veg\", \"water\"))\nlevels(cc) &lt;- cls\n\nggplot() + \n  geom_spatraster(data = cc) + \n  scale_fill_manual(values = c('lightgrey', 'darkgrey', 'lightgreen', \n                               'darkgreen', 'darkblue'), na.value=NA)"
   },
   {
     "objectID": "index.html#some-troubleshooting-tips",
     "href": "index.html#some-troubleshooting-tips",
-    "title": "ZULE SpatialR Workshop",
+    "title": "WWALK SpatialR Workshop",
     "section": "Some Troubleshooting Tips",
     "text": "Some Troubleshooting Tips\n\nDo data exploration (always) but especially spatial data every step of the way (mapview!!)\n\nAlways make sure you have appropriate, matching projections\n\nInspect your attributes - including geometry type\n\nIf you use GitHub, pay attention to file size"
   },
   {
     "objectID": "index.html#resources",
     "href": "index.html#resources",
-    "title": "ZULE SpatialR Workshop",
+    "title": "WWALK SpatialR Workshop",
     "section": "Resources",
-    "text": "Resources\n\nCoordinate systems and projections\nsf\nstars\nterra\nosmdata\nggplot2\nIntro to sf and stars\nterra vs stars\nosmdata feature keys\nterra methods"
+    "text": "Resources\n\nCoordinate systems and projections\nsf\nstars\nterra\nosmdata\nggplot2\nIntro to sf and stars\nterra vs stars\nosmdata feature keys\nterra methods\ntidyterra"
   }
 ]

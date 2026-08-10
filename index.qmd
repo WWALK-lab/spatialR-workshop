@@ -1,5 +1,5 @@
 ---
-title: "ZULE SpatialR Workshop"
+title: "WWALK SpatialR Workshop"
 author: Isabella C Richmond
 format: 
   revealjs:
@@ -8,33 +8,21 @@ format:
 editor: visual
 ---
 
-## Spatial Analysis Software
+## First: how's your day going?
 
-Our lab's expertise lies in MANY softwares (which is extremely cool), they include:
+## Very briefly - why do spatial analysis in R?
 
--   ArcGIS (proprietary/click & point)
--   ENVI (proprietary)
--   QGIS (click & point)
--   Google Earth Engine
--   R
-
-## Very Briefly - Some Advantages of R
-
-::: {layout="[[-1], [1], [-1]]"}
-::: columns
-::: {.column width="50%"}
 -   Reproducibility/documentation
 -   Continuity
 -   Visualization
 -   Resources (see the end of this presentation)
--   All the other usual stuff
-:::
 
-::: {.column width="50%"}
-![](presentation_imgs/esri.jpeg)
-:::
-:::
-:::
+...
+
+-   Anyone else? 
+
+
+
 
 ## Package network
 
@@ -52,19 +40,20 @@ LOTS of packages for spatial analysis in R - can get really specific for certain
 
 ## Projections
 
-::: columns
+:::::: columns
 ::: {.column width="50%"}
 -   Most common projection is WGS 84 (EPSG: 4326)
--   Often a projection that uses meters as units is useful, for us NAD83/MTM Zone 8 can be useful (EPSG: 32188)
+-   Different data sources will have different projections (e.g., Stats Canada uses NAD83 / Statistics Canada Lambert EPSG 3347)
+-   Often a projection that uses meters as units is necessary for analysis, reproject your data before starting! 
 -   Projection codes can be found at [epsg.io](https://epsg.io/)
 :::
 
-::: {.column width="50%"}
+:::: {.column width="50%"}
 ::: {layout="[[-1], [1], [-1]]"}
 ![](presentation_imgs/PROJ.jpg)
 :::
-:::
-:::
+::::
+::::::
 
 ## General Workflow {.scrollable}
 
@@ -93,14 +82,14 @@ LOTS of packages for spatial analysis in R - can get really specific for certain
 #| eval: false
 #| label: install
 
-install.packages(c('sf', 'stars', 'mapview', 'ggplot2', 
-                   'dplyr', 'osmdata', 'basemaps'))
+install.packages(c('sf', 'terra', 'tidyterra', 'mapview', 'ggplot2', 
+                   'dplyr', 'tidyr', 'tibble', 'osmdata', 'basemaps'))
 
-source('scripts/0-packages.R')
+source('scripts/00-packages.R')
 
 ```
 
-## Step 2/3: Identify type of data & Import
+## Step 2/3: Identify type of data & import
 
 ::: panel-tabset
 ## Vector: `sf`
@@ -123,11 +112,11 @@ rv <- read_sf("input/ruelles-vertes.shp")
 ```{r}
 #| echo: true
 #| eval: false
-#| label: read-stars
+#| label: read-terra
 
 # okay, now let's load in some canopy cover data 
 # tif file containing pixels of land cover type across Montreal
-cc <- read_stars("input/canopy-cover.tif")
+cc <- rast("input/canopy-cover.tif")
 ```
 :::
 
@@ -187,23 +176,37 @@ samp <- st_sample(rv_a, c(3,3), type = "random", by_polygon = F) |>
   st_as_sf()
 ```
 
-## Raster: `stars`
+## Raster: `terra`
 
 ```{r}
 #| echo: true
 #| eval: false
-#| label: calc-stars
+#| label: calc-terra
 
 # let's intersect our land use/canopy cover with the buffers we created 
-cc_int <- cc[buffers]
+cc_int <- crop(cc, buffers)
 
 
-# for each ruelle's buffer, let's calculate % canopy cover
-# calculate canopy cover by dividing number of pixels == 4 (canopy) by total number of pixels within a buffer
-buff_can <- aggregate(cc, buffers, FUN = function(x) sum(x == 4)/length(x)) |>
-    st_as_sf() |>
-    rename(percan_2021 = `canopy-cover.tif`) |>
-    mutate(percan_2021 = round(percan_2021, 2))
+# for each ruelle's buffer, let's calculate % canopy cover (canopy == 4 in the raster)
+
+# need to have buffers as a SpatVector, part of the terra package, to do this operation 
+buffers_sv <- vect(buffers)
+
+# calculate the frequency of each category of the raster in each buffer 
+t <- freq(cc, zones = buffers_sv, touches = F)
+
+rv_cc <- buffers |>
+  rownames_to_column('zone') |>
+  mutate(zone = as.numeric(zone)) |>
+  left_join(t, by = 'zone') |>
+  pivot_wider(
+    id_cols = c(zone, geometry),
+    names_from = value,
+    values_from = count
+  ) |>
+  rowwise() |> 
+  mutate(cancov = `4` / sum(c_across(`1`:`4`))) %>% 
+  select(c(cancov, geometry))
 ```
 :::
 
@@ -292,6 +295,7 @@ st_crs(wmpols) = 4326
 
 ::: panel-tabset
 ## Vector
+
 ```{r}
 #| echo: true
 #| eval: false
@@ -310,9 +314,8 @@ th <- theme(panel.border = element_rect(linewidth = 1, fill = NA),
 
 # Plot -------------------------------------------------------
 # transform all layers so they have the same CRS 
-# use EPSG 3347 - same projection that Statistics Canada uses
 mtlcrs <- 3347
-rv_m <- st_transform(rv, mtlcrs)
+rv_m <- st_transform(rv_cc, mtlcrs)
 allpolys_m <- st_transform(allpolys, mtlcrs)
 wmpols_m <- st_transform(wmpols, mtlcrs)
 
@@ -324,13 +327,12 @@ bbi <- st_bbox(st_buffer(allpolys_m, 0.75))
 # if we were plotting the raster we could use the geom_stars function
 plot <- ggplot() +
   geom_sf(fill = montrealcol, data = allpolys_m) + 
-  geom_sf(aes(fill = percan), data = rv_m) + 
+  geom_sf(aes(fill = cancov), data = rv_m) + 
   geom_sf(fill = watercol, col = "#5b5b5b", data = wmpols_m) + 
   scale_fill_viridis_c(direction = -1) + 
   coord_sf(xlim = c(bbi['xmin'], bbi['xmax']),
            ylim = c(bbi['ymin'], bbi['ymax'])) +
   th
-
 
 # Save -------------------------------------------------------
 ggsave(
@@ -343,11 +345,23 @@ ggsave(
 
 ```
 
-
-
 ## Raster
+```{r}
+#| echo: true
+#| eval: false
+#| label: plot-terra
 
-## Vector + Raster
+# clarify what the categories in the raster mean 
+cls <- data.frame(id=1:5, cover=c("low_imp", "high_imp", "low_veg", "high_veg", "water"))
+levels(cc) <- cls
+
+ggplot() + 
+  geom_spatraster(data = cc) + 
+  scale_fill_manual(values = c('lightgrey', 'darkgrey', 'lightgreen', 
+                               'darkgreen', 'darkblue'), na.value=NA) 
+```
+
+
 :::
 
 ## Some Troubleshooting Tips
@@ -369,3 +383,4 @@ ggsave(
 -   [terra vs stars](https://www.r-bloggers.com/2021/05/a-comparison-of-terra-and-stars-packages/)
 -   [osmdata feature keys](https://wiki.openstreetmap.org/wiki/Map_features)
 -   [terra methods](https://rspatial.github.io/terra/reference/terra-package.html)
+-   [tidyterra](https://dieghernan.github.io/tidyterra/)

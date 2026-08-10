@@ -43,3 +43,4 @@ example/input/.directory
 /.quarto/
 
 example/output/water.gpkg
+**/*.quarto_ipynb
