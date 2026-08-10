@@ -1,6 +1,5 @@
 ---
 title: "WWALK SpatialR Workshop"
-author: Isabella C Richmond
 format: 
   revealjs:
     theme: simple
